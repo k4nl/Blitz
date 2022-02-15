@@ -1,15 +1,17 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const createTask = async (user, task) => {
+const createTask = async (task) => {
   const db = await connection();
-  const task = await db.collection('tasks').insertOne({ user, task });
+  const task = await db.collection('tasks').insertOne({ task });
   return task;
 };
 
-const getAllTasks = async (user) => {
+const getAllTasks = async () => {
   const db = await connection();
-  const tasks = await db.collection('tasks').aggregate({ $match: { _id: ObjectId(user.id)}});
+  const tasks = await db.collection('tasks').find().toArray();
+  // a linha de cima sera alterada para um aggregate no final do projeto, para linkar uma task a um usuario,
+  // fazendo que o usuario so veja suas tarefas
   return tasks;
 };
 
