@@ -18,6 +18,11 @@ const getAllTasks = async () => {
   // fazendo que o usuario so veja suas tarefas
 };
 
+const getAllTasksByUser = async (id) => {
+  const db = await connection();
+  return db.collection('tasks').find({ 'user.id': id }).toArray();
+}
+
 const getTaskById = async (id) => {
   const db = await connection();
   return db.collection('tasks').findOne({ _id: ObjectId(id) });
@@ -40,6 +45,7 @@ module.exports = {
   createTask,
   getTaskByName,
   getAllTasks,
+  getAllTasksByUser,
   getTaskById,
   updateTask,
   deleteTask,

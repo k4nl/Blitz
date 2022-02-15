@@ -21,8 +21,8 @@ const verifySchema = (error, msg) => {
   }
 }
 
-const verifyTaskOwner = (task, user) => {
-  if (task !== user) {
+const verifyTaskOwner = (task, userId, userEmail) => {
+  if (task !== userId && userEmail !== 'admin@blitz.com') {
     throw new CustomError({ status: e.unauthorized, message: 'Unauthorized' })
   }
 }

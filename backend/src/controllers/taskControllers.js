@@ -10,9 +10,9 @@ const createTask = async (req, res, next) => {
   }
 };
 
-const getAllTasks = async (_req, res, next) => {
+const getAllTasks = async (req, res, next) => {
   try {
-    const tasks = await taskServices.getAllTasks();
+    const tasks = await taskServices.getAllTasks(req.user);
     return res.status(e.success).json(tasks);
   } catch (error) {
     return next(error);
