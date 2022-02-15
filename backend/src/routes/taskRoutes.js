@@ -7,8 +7,8 @@ const middleware = require('../middlewares/auth')
 
 router.post('/', middleware.login ,taskControllers.createTask);
 router.get('/', middleware.login, taskControllers.getAllTasks);
-router.put('/', middleware.login, taskControllers.updateTask);
-router.delete('/', middleware.login, taskControllers.deleteTask);
+router.put('/:id', middleware.login, taskControllers.updateTask);
+router.delete('/:id', middleware.login, taskControllers.deleteTask);
 
 
 module.exports = router;

@@ -17,7 +17,7 @@ const login = (req, _res, next) => {
   try {
     const decoded = jwt.verify(token, secret);
     const user = decoded.data;
-    req.user = user;
+    req.user = user.id;
     return next();
   } catch (error) {
     return next(e.unauthorized);

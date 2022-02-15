@@ -9,9 +9,3 @@ db.users.insertMany([
   { 'name': 'trybe', 'email': 'trybe@blitz.com', 'password': 'trybe123' },
 ]);
 
-db.tasks.insertMany([
-  { 'name': 'projeto 1', 'description': 'resolver o projeto blitz', 'status': 'andamento' },
-  { 'name': 'projeto 2', 'description': 'resolver o projeto socket', 'status': 'andamento' },
-  { 'name': 'projeto individual', 'description': 'resolver projeto de pousadas', 'status': 'pendente' },
-  { 'name': 'tomar cafe da manha', 'description': 'comer','status': 'pronto' },
-]);

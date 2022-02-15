@@ -3,16 +3,16 @@ const e = require('../utils/dictionary/status');
 
 const createTask = async (req, res, next) => {
   try {
-    const task = await taskServices.createTask(req.body);
+    const task = await taskServices.createTask(req.body, req.user);
     return res.status(e.created).json(task);
   } catch (error) {
     return next(error);
   }
 };
 
-const getAllTasks = async (req, res, next) => {
+const getAllTasks = async (_req, res, next) => {
   try {
-    const tasks = await taskServices.getAllTasks(req.body, req.user);
+    const tasks = await taskServices.getAllTasks();
     return res.status(e.success).json(tasks);
   } catch (error) {
     return next(error);
