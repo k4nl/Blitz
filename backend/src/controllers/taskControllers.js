@@ -30,8 +30,9 @@ const updateTask = async (req, res, next) => {
 };
 
 const deleteTask = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    await taskServices.login(req.body, req.user);
+    await taskServices.deleteTask(req.user, id);
     return res.status(e.success).json();
   } catch (error) {
     return next(error);

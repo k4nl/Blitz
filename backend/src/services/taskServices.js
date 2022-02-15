@@ -24,11 +24,11 @@ const updateTask = async (task, userId, id) => {
   verify.verifySchema(error, msg);
 
   const taskFound = await taskModels.getTaskById(id);
-  console.log(taskFound);
+
   verify.verifyIfTaskExist(taskFound);
   verify.verifyTaskOwner(taskFound.user.id, userId);
-  const updated = await taskModels.updateTask(id, task.status);
 
+  const updated = await taskModels.updateTask(id, task.status);
   const response = { 
     _id: id,
     task: { ...taskFound.task, status: task },
@@ -38,8 +38,17 @@ const updateTask = async (task, userId, id) => {
   return response;
 }
 
+const deleteTask = async (userId, id) => {
+  const taskFound = await taskModels.getTaskById(id);
+  verify.verifyIfTaskExist(taskFound);
+  verify.verifyTaskOwner(taskFound.user.id, userId);
+
+  await taskModels.deleteTask(id);
+}
+
 module.exports = {
   createTask,
   getAllTasks,
   updateTask,
+  deleteTask,
 }
