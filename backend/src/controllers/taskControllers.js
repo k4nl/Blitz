@@ -38,6 +38,8 @@ const deleteTask = async (req, res, next) => {
 };
 
 module.exports = {
-  createUser,
-  login,
+  createTask,
+  getAllTasks,
+  updateTask,
+  deleteTask,
 };

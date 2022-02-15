@@ -4,7 +4,7 @@ const e = require('../utils/dictionary/status');
 const verify = require('../utils/functions');
 const schema = require('../schemas/taskSchema');
 
-const createTask = (task) => {
+const createTask = async (task) => {
   const { error } = schema.taskSchema.validade({ task });
   const msg = error && error.details[0].message;
   if (error) {
@@ -13,8 +13,8 @@ const createTask = (task) => {
   const name = await taskModels.getTaskByName(task);
   verify.verifyName(name);
 
-  const task = await taskModels.createTask(task);
-  return task;
+  const taskCreated = await taskModels.createTask(task);
+  return taskCreated;
 }
 
 module.exports = {

@@ -1,4 +1,4 @@
-const CustomError = require('../middlewares/CustomError');
+const CustomError = require('../../middlewares/CustomError');
 const e = require('../dictionary/status');
 
 const verifyName = (name) => {
