@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import IconButton from '@mui/material/IconButton';
 
-export default function Header({ props }) {
+export default function Header() {
 
   const [ auth, setAuth ] = useState(false);
 
