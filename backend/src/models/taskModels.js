@@ -7,6 +7,12 @@ const createTask = async (task) => {
   return task;
 };
 
+const getTaskByName = async (task) => {
+  const db = await connection();
+  const task = await db.collection('tasks').findOne({ name: task.name });
+  return task;
+};
+
 const getAllTasks = async () => {
   const db = await connection();
   const tasks = await db.collection('tasks').find().toArray();
@@ -38,6 +44,7 @@ const deleteTask = async (id) => {
 
 module.exports = {
   createTask,
+  getTaskByName,
   getAllTasks,
   getTaskById,
   updateTask,
