@@ -4,40 +4,37 @@ const CustomError = require('../middlewares/CustomError');
 const e = require('../utils/dictionary/status');
 const schema = require('../schemas/userSchema');
 const auth = require('../middlewares/auth');
+const verify = require('../utils/functions');
 
-
-const createUser = async (name, email, password) => {
-  const { error } = schema.userSchema.validate({ name, email, password });
+const createUser = async (user) => {
+  const { error } = schema.userSchema.validate(user);
   const msg = error && error.details[0].message;
   if (error) {
     throw new CustomError({ status: e.invalidRequest, message: msg});
   }
   
-  const emailAlreadyTaken = await userModels.findUserByEmail(email);
-  if (emailAlreadyTaken) {
-    throw new CustomError({ status: e.alreadyRegistered, message: msg });
-  }
+  const emailAlreadyTaken = await userModels.findUserByEmail(user.email);
+  console.log(emailAlreadyTaken);
+  verify.verifyIfUserEmailExists(emailAlreadyTaken);
 
-  const insertedId = await userModels.createUser(name, email, password);
-  return { user: { name, email, _id: ObjectId(insertedId) } };
+  const { insertedId } = await userModels.createUser(user);
+
+  return { _id: ObjectId(insertedId), user: { name: user.name, email: user.email } };
 };
 
-const login = async (email, password) => {
-  const { error } = schema.loginSchema.validate({ email, password });
+const login = async (user) => {
+  const { error } = schema.loginSchema.validate(user);
   const msg = error && error.details[0].message;
   if (error) {
     throw new CustomError({ status: e.invalidFilds, message: msg });
   }
+  
+  const userFound = await userModels.findUserByEmail(user.email);
+  verify.verifyUser(userFound, user.password);
 
-  const user = await userModels.findUserByEmail(email);
+  const { _id } = userFound;
 
-  if (!user || user.password !== password) {
-    throw new CustomError({ status: e.incorrectUser, message: msg});
-  }
-
-  const { _id } = user;
-
-  return { token: auth.createToken(_id, email) };
+  return { token: auth.createToken(_id, user.email) };
 };
 
 module.exports = {

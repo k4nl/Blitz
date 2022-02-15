@@ -14,8 +14,6 @@ const getTaskByName = async ({ name }) => {
 const getAllTasks = async () => {
   const db = await connection();
   return db.collection('tasks').find({}).toArray();
-  // a linha de cima sera alterada para um aggregate no final do projeto, para linkar uma task a um usuario,
-  // fazendo que o usuario so veja suas tarefas
 };
 
 const getAllTasksByUser = async (id) => {

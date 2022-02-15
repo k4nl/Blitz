@@ -5,7 +5,7 @@ db.tasks.drop();
 
 // Insert a few documents into the sales collection.
 db.users.insertMany([
-  { 'name': 'admin', 'email': 'admin@blitz.com', 'password': '123456' },
-  { 'name': 'trybe', 'email': 'trybe@blitz.com', 'password': 'trybe123' },
+  {'user': { 'name': 'admin', 'email': 'admin@blitz.com', 'password': '123456' }},
+  {'user': { 'name': 'trybe', 'email': 'trybe@blitz.com', 'password': 'trybe123' }},
 ]);
 

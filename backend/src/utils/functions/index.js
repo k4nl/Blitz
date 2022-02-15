@@ -9,6 +9,12 @@ const verifyName = (name) => {
   };
 };
 
+const verifyIfUserEmailExists = (email) => {
+  if (email) {
+    throw new CustomError({ status: e.invalidRequest, message: 'User email already exist'})
+  };
+};
+
 const verifyIfTaskExist = (task) => {
   if (!task) {
     throw new CustomError({ status: e.notFound, message: 'Task not found'})
@@ -25,12 +31,20 @@ const verifyTaskOwner = (task, userId, userEmail) => {
   if (task !== userId && userEmail !== 'admin@blitz.com') {
     throw new CustomError({ status: e.unauthorized, message: 'Unauthorized' })
   }
+};
+
+const verifyUser = ({ user }, password) => {
+  if (!user || user.password !== password) {
+    throw new CustomError({ status: e.invalidRequest, message: 'User not found or incorrect password' })
+  }
 }
 
 
 module.exports = {
   verifyName,
   verifyIfTaskExist,
+  verifyIfUserEmailExists,
   verifySchema,
   verifyTaskOwner,
+  verifyUser,
 }
