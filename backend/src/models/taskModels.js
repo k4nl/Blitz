@@ -23,11 +23,11 @@ const getTaskById = async (id) => {
   return db.collection('tasks').findOne({ _id: ObjectId(id) });
 };
 
-const updateTask = async (id, description, taskStatus) => {
+const updateTask = async (id, taskStatus) => {
   const db = await connection();
   return db.collection('tasks').updateOne(
     { _id: ObjectId(id)},
-    { $set: { description, taskStatus } },
+    { $set: { 'task.status': taskStatus } },
   );
 };
 

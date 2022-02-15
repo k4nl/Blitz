@@ -20,8 +20,9 @@ const getAllTasks = async (_req, res, next) => {
 };
 
 const updateTask = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const task = await taskServices.updateTask(req.body, req.user);
+    const task = await taskServices.updateTask(req.body, req.user, id);
     return res.status(e.success).json(task);
   } catch (error) {
     return next(error);

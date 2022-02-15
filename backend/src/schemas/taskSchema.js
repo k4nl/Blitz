@@ -6,6 +6,11 @@ const taskSchema = Joi.object({
   status: Joi.string().required(),
 });
 
+const editSchema = Joi.object({
+  status: Joi.string().required(),
+});
+
 module.exports = {
   taskSchema,
+  editSchema,
 }
