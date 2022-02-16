@@ -82,7 +82,7 @@ describe('Testando o userModel', () => {
     await MongoClient.connect.restore();
   });
 
-  describe.only('Testando o userModels.create', () => {
+  describe('Testando o userModels.create', () => {
     it('Se e possivel criar um um usuario', async () => {
       const { ops } = await userModels.createUser(newUser);
       const user = ops[0].user;

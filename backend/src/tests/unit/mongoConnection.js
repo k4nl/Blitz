@@ -13,4 +13,4 @@ const connection = async () => {
   return MongoClient.connect(URLMock, OPTIONS);
 };
 
-module.exports = connection;
+module.exports = connection ;
