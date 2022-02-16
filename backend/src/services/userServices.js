@@ -8,13 +8,10 @@ const verify = require('../utils/functions');
 
 const createUser = async (user) => {
   const { error } = schema.userSchema.validate(user);
-  const msg = error && error.details[0].message;
-  if (error) {
-    throw new CustomError({ status: e.invalidRequest, message: msg});
-  }
+  verify.verifyJoiError(error);
   
   const emailAlreadyTaken = await userModels.findUserByEmail(user.email);
-  console.log(emailAlreadyTaken);
+
   verify.verifyIfUserEmailExists(emailAlreadyTaken);
 
   const { insertedId } = await userModels.createUser(user);
@@ -24,13 +21,12 @@ const createUser = async (user) => {
 
 const login = async (user) => {
   const { error } = schema.loginSchema.validate(user);
-  const msg = error && error.details[0].message;
-  if (error) {
-    throw new CustomError({ status: e.invalidFilds, message: msg });
-  }
-  
+  verify.verifyJoiError(error);
+
   const userFound = await userModels.findUserByEmail(user.email);
-  verify.verifyUser(userFound, user.password);
+
+  verify.verifyUser(userFound);
+  verify.verifyPassword(userFound, user.password);
 
   const { _id } = userFound;
 

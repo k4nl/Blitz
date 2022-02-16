@@ -6,9 +6,14 @@ const createTask = async (task, user) => {
   return db.collection('tasks').insertOne({ task, user });
 };
 
-const getTaskByName = async (name) => {
+const getTaskByName = async (name, id) => {
   const db = await connection();
-  return db.collection('tasks').findOne({ 'task.name': name });
+  return db.collection('tasks').findOne({
+    $and: [
+      { 'task.name': name },
+      { 'user.id': id },
+    ]
+  });
 };
 
 const getAllTasks = async () => {
