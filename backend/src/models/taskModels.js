@@ -6,7 +6,7 @@ const createTask = async (task, user) => {
   return db.collection('tasks').insertOne({ task, user });
 };
 
-const getTaskByName = async ({ name }) => {
+const getTaskByName = async (name) => {
   const db = await connection();
   return db.collection('tasks').findOne({ 'task.name': name });
 };
@@ -26,12 +26,13 @@ const getTaskById = async (id) => {
   return db.collection('tasks').findOne({ _id: ObjectId(id) });
 };
 
-const updateTask = async (id, taskStatus) => {
+const updateTask = async (id, task) => {
   const db = await connection();
-  return db.collection('tasks').updateOne(
+  await db.collection('tasks').updateOne(
     { _id: ObjectId(id)},
-    { $set: { 'task.status': taskStatus } },
+    { $set: { 'task.status': task.status } },
   );
+  return task;
 };
 
 const deleteTask = async (id) => {
