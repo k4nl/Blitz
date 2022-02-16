@@ -8,12 +8,12 @@ const createTask = async (task, user) => {
   const { error } = schema.taskSchema.validate(task);
   const msg = error && error.details[0].message;
   verify.verifySchema(error, msg);
-
-  const name = await taskModels.getTaskByName(task.name);
+  verify.verifyTaskStatus(task.status);
+  const name = await taskModels.getTaskByName(task.name, user.id);
   verify.verifyName(name);
 
-  await taskModels.createTask(task, { id: user.id, email: user.email });
-  return task;
+  const { insertedId } = await taskModels.createTask(task, { id: user.id, email: user.email });
+  return { _id: insertedId, task, user, };
 }
 
 const getAllTasks = async (user) => {
@@ -48,8 +48,8 @@ const deleteTask = async (user, id) => {
   const taskFound = await taskModels.getTaskById(id);
   verify.verifyIfTaskExist(taskFound);
   verify.verifyTaskOwner(taskFound.user.id, user.id, user.email);
-
   await taskModels.deleteTask(id);
+  return taskFound;
 }
 
 module.exports = {

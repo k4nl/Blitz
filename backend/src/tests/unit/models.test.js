@@ -11,7 +11,7 @@ const connection = require('./mongoConnection');
 const taskExample = {
   _id: '620c23a39baf59d051bc07a6',
   task: {
-    name: 'problema 42',
+    name: 'problema1',
     description: 'estou cansado',
     status: 'em andamento'
   },
@@ -82,7 +82,7 @@ describe('Testando o userModel', () => {
     await MongoClient.connect.restore();
   });
 
-  describe('Testando o userModels.create', () => {
+  describe.only('Testando o userModels.create', () => {
     it('Se e possivel criar um um usuario', async () => {
       const { ops } = await userModels.createUser(newUser);
       const user = ops[0].user;
@@ -92,7 +92,7 @@ describe('Testando o userModel', () => {
   });
 
   describe('Testando o userModels.findUserByEmail', () => {
-    it('Se e possivel criar achar um usuario com email', async () => {
+    it('Se é possivel criar achar um usuario com email', async () => {
       const userData = await userModels.findUserByEmail(userAdmin.email);
       const { user } = userData;
       expect(userData).to.not.be.null;
@@ -147,16 +147,14 @@ describe('Testando o taskModel', () => {
   });
 
   describe('Testando o taskModel.getTaskByName', () => {
-    it('Se e possivel pegar a task pelo nome', async () => {
-      const task = await taskModels.getTaskByName(taskExample.task.name);
-      expect(task.task).to.deep.equal(taskExample.task);
-      expect(task.task).to.not.equal(taskExample2.task);
+    it('Se e possivel, com o usuario logado, pegar a task pelo nome', async () => {
+      const task = await taskModels.getTaskByName(taskExample.task.name, taskExample.user.id);
       expect(task.user).to.deep.equal(taskExample.user);
     });
   });
 
   describe('Testando o taskModel.getAllTasks', () => {
-    it('Se e possivel pegar todas as tasks', async () => {
+    it('Se e possivel pegar todas as tasks se voce for o admin', async () => {
       const tasks = await taskModels.getAllTasks();
       expect(tasks).to.be.an('array');
       expect(tasks[0]._id).to.deep.equal(taskId2);

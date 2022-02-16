@@ -32,8 +32,8 @@ const updateTask = async (req, res, next) => {
 const deleteTask = async (req, res, next) => {
   const { id } = req.params;
   try {
-    await taskServices.deleteTask(req.user, id);
-    return res.status(e.success).json();
+    const task = await taskServices.deleteTask(req.user, id);
+    return res.status(e.success).json(task);
   } catch (error) {
     return next(error);
   }

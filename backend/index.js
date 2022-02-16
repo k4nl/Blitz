@@ -15,7 +15,7 @@ const PORT = process.env.PORT;
 
 // tratativa do erro
 
-app.use((error, _req, resp, _next) => {
+app.use((error, _req, resp) => {
   if (error.status) {
     return resp.status(error.status).json(error);
   }
