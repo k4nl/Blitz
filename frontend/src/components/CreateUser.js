@@ -5,36 +5,46 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import UserContext from '../context/UserContext';
 
-export default function Login() {
+export default function CreateUser() {
 
-  const { logIn } = useContext(UserContext);
+  const { logIn, register } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const [ name, setName ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ emailError, setEmailError ] = useState(false);
   const [ passwordError, setPasswordError ] = useState(false);
+  const [ nameError, setNameError ] = useState(false);
+
+  const verifyInputError = () => {
+    if (passwordError) {
+      return setPasswordError(true);
+    }
+    if (emailError) {
+      return setEmailError(true);
+    }
+    if (nameError) {
+      return setNameError(true);
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setEmailError(false);
     setPasswordError(false);
+    verifyInputError();
 
-    if (passwordError) {
-      setPasswordError(true);
-    }
-
-    if (emailError) {
-      setEmailError(true);
-    }
-
-    if (email && password) {
-      const errorMessage = await logIn({ email, password });
-      if (!errorMessage) {
-        navigate('/task', { replace: true });
-      } else {
-        global.alert(errorMessage);
+    if (email && password && name) {
+      const createErrorMessage = await register({ name, password, email });
+      const loginErrorMessage = await logIn({ email, password });
+      if (createErrorMessage) {
+        global.alert(createErrorMessage);
       }
+      if (loginErrorMessage) {
+        global.alert(loginErrorMessage);
+      }
+      navigate('/task', { replace: true });
     }
   }
   return (
@@ -48,6 +58,13 @@ export default function Login() {
         onSubmit={ handleSubmit }
       >
         <div>
+        <TextField
+          required
+          label="Username"
+          type="email"
+          onChange={ (e) => setName(e.target.value)}
+          error={emailError}
+        />
          <TextField
           required
           label="Email"
@@ -67,19 +84,11 @@ export default function Login() {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', m: 4}}>
         <Button
           onClick={ (e) => handleSubmit(e)}
-          type="submit"
-          color="secondary"
-          variant="contained"
-        >
-          Login
-        </Button>
-        <Button
-          onClick={ () => navigate('/sign', { replace: true })}
           type="button"
           color="primary"
           variant="contained"
         >
-          Create user
+          Register
         </Button>
         </Box>
       </Box>
