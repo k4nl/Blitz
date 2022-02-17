@@ -6,15 +6,17 @@ const setSessionInfo = (token, email) => {
 };
 
 const clearSessionInfo = () => {
-  sessionStorage.removeItem('username');
+  sessionStorage.removeItem('email');
   sessionStorage.removeItem('token');
 };
 
 export const createUser = async (userInfo) => {
   try {
-    await userApi.post('/sign', userInfo);
+    const response = await userApi.post('/sign', userInfo);
+    return response;
   } catch (error) {
-    console.log(error);
+    const { data } = await error.response;
+    return { message: data.message,  status: data.status };
   }
 }
 

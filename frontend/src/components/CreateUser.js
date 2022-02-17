@@ -8,6 +8,7 @@ import UserContext from '../context/UserContext';
 export default function CreateUser() {
 
   const { logIn, register } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   const [ name, setName ] = useState('');
@@ -31,20 +32,16 @@ export default function CreateUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setEmailError(false);
-    setPasswordError(false);
     verifyInputError();
 
     if (email && password && name) {
-      const createErrorMessage = await register({ name, password, email });
-      const loginErrorMessage = await logIn({ email, password });
-      if (createErrorMessage) {
-        global.alert(createErrorMessage);
+      const response = await register({ name, password, email });
+      if (response.status === 201) {
+        await logIn({ email, password });
+        navigate('/task', { replace: true });
+      } else {
+        window.alert(response);
       }
-      if (loginErrorMessage) {
-        global.alert(loginErrorMessage);
-      }
-      navigate('/task', { replace: true });
     }
   }
   return (

@@ -2,42 +2,54 @@ import React, { useState, useEffect } from 'react';
 
 import TaskContext from './TaskContext';
 
-import { getTasks, editTask } from '../helpers/taskApiHelpers';
+import { getTasks, editTaskService, createTask, removeTaskService } from '../helpers/taskApiHelpers';
 
 const TaskProvider = ({ children }) => {
   const [taskList, setTaskList] = useState([]);
+  const [buttonTitle, setButtonTitle ] = useState('Create')
   const [taskToEdit, setTaskToEdit] = useState({});
 
-  const fetchPosts = async () => {
+  const fetchTasks = async () => {
     const data = await getTasks();
     setTaskList(data);
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchTasks();
   }, []);
 
-  const refreshPosts = () => {
-    fetchPosts();
+  const refreshTasks = () => {
+    fetchTasks();
   };
 
-  const setEdit = (postData) => {
-    setTaskToEdit(postData);
+  const createtask = async (task) => {
+    await createTask(task);
+  }
+
+  const editTask = async (id, task) => {
+    await editTaskService(id, task);
+    refreshTasks();
   };
 
-  const submitEdit = async (postData) => {
-    await editTask(postData);
-    setTaskToEdit({});
+  const removeTask = async (id) => {
+    await removeTaskService(id);
+    refreshTasks();
   };
+
+
 
   return (
     <TaskContext.Provider
       value={{
         taskList,
         taskToEdit,
-        refreshPosts,
-        setEdit,
-        submitEdit,
+        buttonTitle,
+        setButtonTitle,
+        setTaskToEdit,
+        createtask,
+        refreshTasks,
+        editTask,
+        removeTask,
       }}
     >
       {children}

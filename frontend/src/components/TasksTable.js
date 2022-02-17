@@ -10,15 +10,17 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 
 
-
 export default function TasksTable() {
 
-  const { taskList } = useContext(TaskContext);
+  const { taskList, setButtonTitle, setTaskToEdit, removeTask } = useContext(TaskContext);
 
-  console.log(taskList);
+  const editStatus = (task) => {
+    setButtonTitle('Edit');
+    setTaskToEdit(task);
+  }
 
   return (
-    <Paper sx={{ width: '50%' }}>
+    <Paper sx={{ width: '50%', mt: 5 }}>
        <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650, width: '100%' }} aria-label="simple table">
         <TableHead>
@@ -26,7 +28,6 @@ export default function TasksTable() {
             <TableCell align="left">Name</TableCell>
             <TableCell align="right">Description</TableCell>
             <TableCell align="right">Status</TableCell>
-            <TableCell align="center">Edit</TableCell>
             <TableCell align="center">Remove</TableCell>
           </TableRow>
         </TableHead>
@@ -37,14 +38,31 @@ export default function TasksTable() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row" align="left">
-                {task.name}
+                {`${task.name.substring(0, 20)}...`}
               </TableCell>
-              <TableCell align="right">{task.description}</TableCell>
-              <TableCell align="right">{task.status}</TableCell>
-              <TableCell align="center"><Button size="small" color="secondary" variant="contained">edit</Button></TableCell>
-              <TableCell align="center"><Button size="small" color="secondary" variant="contained">remove</Button></TableCell>
+              <TableCell align="right">{`${task.description.substring(0, 20)}...`}</TableCell>
+              <TableCell align="right">
+                {task.status}
+                <Button
+                  size="small"
+                  color="secondary"
+                  variant="contained"
+                  sx={{ ml: 1}}
+                  onClick={ (e) => editStatus({ id, task }) }
+                  >edit
+                </Button>
+              </TableCell>
+              <TableCell align="center">
+                <Button
+                  size="small"
+                  color="secondary"
+                  variant="contained"
+                  onClick={() => removeTask(id)}
+                  >remove
+                </Button>
+              </TableCell>
             </TableRow>
-          )) : <p>nao existe task para voce</p>}
+          )) : <TableRow></TableRow>}
         </TableBody>
       </Table>
     </TableContainer>

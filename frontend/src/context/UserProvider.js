@@ -7,7 +7,6 @@ import { userLogout, login , createUser } from '../helpers/userApiHelpers';
 const UserProvider = ({ children }) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [userName, setUserName] = useState(null);
 
   useEffect(() => {
@@ -18,9 +17,7 @@ const UserProvider = ({ children }) => {
   }, []);
 
   const logIn = async (userCredentials) => {
-    setIsFetching(true);
     const { status, message } = await login(userCredentials);
-    setIsFetching(false);
 
     if (status === 200) {
       setUserName(userCredentials.email);
@@ -39,14 +36,12 @@ const UserProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    setIsFetching(true);
     const { status, message } = await createUser(userData);
-    setIsFetching(false);
     if (status === 201) {
       setUserName(userData.email);
       setIsLoggedIn(true);
 
-      return '';
+      return { status: 201 };
     }
 
     return message;
@@ -54,7 +49,7 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ isLoggedIn, isFetching, logIn, logOut, register, userName }}
+      value={{ isLoggedIn, logIn, logOut, register, userName }}
     >
       {children}
     </UserContext.Provider>
